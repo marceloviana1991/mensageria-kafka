@@ -16,10 +16,8 @@ public class ConsumerService {
         while(true) {
             var records = consumer.poll(Duration.ofMillis(100));
             if(!records.isEmpty()) {
-                System.out.println("Encontrei " + records.count() + " registros");
                 for(var record: records) {
                     System.out.println("---------------------");
-                    System.out.println("Processing new order, checking for fraud");
                     System.out.println(record.key());
                     System.out.println(record.value());
                     System.out.println(record.partition());
@@ -31,7 +29,6 @@ public class ConsumerService {
                         // ignoring
                         e.printStackTrace();
                     }
-                    System.out.println("Order processed");
                 }
             }
         }
