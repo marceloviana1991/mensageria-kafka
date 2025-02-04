@@ -9,9 +9,9 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 public class ProducerService {
+    private final KafkaProducer<String, String> producer = new KafkaProducer<>(properties());
 
-    public static void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
-        var producer = new KafkaProducer<String, String>(properties());
+    public void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
         var record = new ProducerRecord<>(topic, key, value);
         producer.send(record, (data, ex) -> {
             if (ex != null) {
@@ -23,7 +23,7 @@ public class ProducerService {
         }).get();
     }
 
-    private static Properties properties() {
+    private Properties properties() {
         var properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
