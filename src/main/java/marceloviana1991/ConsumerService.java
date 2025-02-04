@@ -5,14 +5,14 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 public class ConsumerService {
 
-    public static void run(String topic, String groupId, GetValue getValue) {
+    public static void run(List<String> topic, String groupId, GetValue getValue) {
         var consumer = new KafkaConsumer<String, String>(properties(groupId));
-        consumer.subscribe(Collections.singletonList(topic));
+        consumer.subscribe(topic);
         while(true) {
             var records = consumer.poll(Duration.ofMillis(100));
             if(!records.isEmpty()) {

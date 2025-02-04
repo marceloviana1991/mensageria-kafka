@@ -9,5 +9,11 @@ public class NewOrderMain {
                 "132123,67523,7894589745",
                 "132123,67523,7894589745"
         );
+
+        ProducerService.send(
+                "ECOMMERCE_SEND_EMAIL",
+                "Thank you for your order! We are processing your order!",
+                "Thank you for your order! We are processing your order!"
+        );
     }
 }
