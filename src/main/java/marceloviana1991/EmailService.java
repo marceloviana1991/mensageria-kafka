@@ -8,12 +8,14 @@ public class EmailService {
 
     public static void main(String[] args) {
         List<String> emailList = new LinkedList<>();
-        ConsumerService.run(
-                Collections.singletonList("ECOMMERCE_SEND_EMAIL"),
-                EmailService.class.getSimpleName(),
-                (value) -> {
-                    emailList.add(value);
-                }
-        );
+        try(var consumer = new ConsumerService(EmailService.class.getSimpleName())) {
+            consumer.run(
+                    Collections.singletonList("ECOMMERCE_SEND_EMAIL"),
+                    (value) -> {
+                        emailList.add(value);
+                        System.out.println(emailList);
+                    }
+            );
+        }
     }
 }

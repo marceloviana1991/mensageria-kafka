@@ -8,12 +8,14 @@ public class FraudDetectorService {
 
     public static void main(String[] args) {
         List<String> orderList = new LinkedList<>();
-        ConsumerService.run(
-                Collections.singletonList("ECOMMERCE_NEW_ORDER"),
-                FraudDetectorService.class.getSimpleName(),
-                (value) -> {
-                    orderList.add(value);
-                }
-        );
+        try(var consumer = new ConsumerService(FraudDetectorService.class.getSimpleName())) {
+            consumer.run(
+                    Collections.singletonList("ECOMMERCE_NEW_ORDER"),
+                    (value) -> {
+                        orderList.add(value);
+                        System.out.println(orderList);
+                    }
+            );
+        }
     }
 }

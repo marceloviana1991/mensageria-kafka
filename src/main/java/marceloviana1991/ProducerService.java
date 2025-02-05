@@ -5,10 +5,11 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import java.io.Closeable;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
-public class ProducerService {
+public class ProducerService implements Closeable {
     private final KafkaProducer<String, String> producer = new KafkaProducer<>(properties());
 
     public void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
@@ -29,5 +30,10 @@ public class ProducerService {
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return properties;
+    }
+
+    @Override
+    public void close() {
+        producer.close();
     }
 }
