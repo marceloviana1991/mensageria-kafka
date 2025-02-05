@@ -1,5 +1,5 @@
 package marceloviana1991;
 
-public interface GetValue {
-    void get(String topic, String value);
+public interface GetValue<T> {
+    void get(String topic, T value);
 }

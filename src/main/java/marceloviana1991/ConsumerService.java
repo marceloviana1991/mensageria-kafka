@@ -1,5 +1,6 @@
 package marceloviana1991;
 
+import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -9,20 +10,26 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerService implements Closeable {
+public class ConsumerService<T> implements Closeable {
     private final KafkaConsumer<String, String> consumer;
 
     public ConsumerService(String groupId) {
         this.consumer = new KafkaConsumer<>(properties(groupId));
     }
 
-    public void run(List<String> topic, GetValue getValue) {
+    public void run(List<String> topic, GetValue<T> getValue, Class<T> tClass) {
         consumer.subscribe(topic);
         while(true) {
             var records = consumer.poll(Duration.ofMillis(100));
             if(!records.isEmpty()) {
                 for(var record: records) {
-                    getValue.get(record.topic(), record.value());
+                    if (!tClass.equals(String.class)) {
+                        Gson gson = new Gson();
+                        var value = gson.fromJson(record.value(), tClass);
+                        getValue.get(record.topic(), value);
+                    } else {
+                        getValue.get(record.topic(), (T) record.value());
+                    }
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

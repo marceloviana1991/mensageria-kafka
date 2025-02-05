@@ -1,5 +1,6 @@
 package marceloviana1991;
 
+import com.google.gson.Gson;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,7 +13,9 @@ import java.util.concurrent.ExecutionException;
 public class ProducerService implements Closeable {
     private final KafkaProducer<String, String> producer = new KafkaProducer<>(properties());
 
-    public void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
+    public <T> void send(String topic, String key, T object) throws ExecutionException, InterruptedException {
+        Gson gson = new Gson();
+        var value = gson.toJson(object);
         var record = new ProducerRecord<>(topic, key, value);
         producer.send(record, (data, ex) -> {
             if (ex != null) {
