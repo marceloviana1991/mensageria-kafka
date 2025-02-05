@@ -11,7 +11,7 @@ public class EmailService {
         try(var consumer = new ConsumerService(EmailService.class.getSimpleName())) {
             consumer.run(
                     Collections.singletonList("ECOMMERCE_SEND_EMAIL"),
-                    (value) -> {
+                    (topic, value) -> {
                         emailList.add(value);
                         System.out.println(emailList);
                     }

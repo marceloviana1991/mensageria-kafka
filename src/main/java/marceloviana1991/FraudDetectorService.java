@@ -11,7 +11,7 @@ public class FraudDetectorService {
         try(var consumer = new ConsumerService(FraudDetectorService.class.getSimpleName())) {
             consumer.run(
                     Collections.singletonList("ECOMMERCE_NEW_ORDER"),
-                    (value) -> {
+                    (topic, value) -> {
                         orderList.add(value);
                         System.out.println(orderList);
                     }

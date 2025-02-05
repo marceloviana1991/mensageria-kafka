@@ -22,7 +22,7 @@ public class ConsumerService implements Closeable {
             var records = consumer.poll(Duration.ofMillis(100));
             if(!records.isEmpty()) {
                 for(var record: records) {
-                    getValue.get(record.value());
+                    getValue.get(record.topic(), record.value());
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

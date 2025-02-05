@@ -8,7 +8,9 @@ public class LogService {
         try(var consumer = new ConsumerService(LogService.class.getSimpleName())) {
             consumer.run(
                     List.of("ECOMMERCE_SEND_EMAIL", "ECOMMERCE_NEW_ORDER"),
-                    System.out::println
+                    (topic, value) -> {
+                        System.out.println(topic + " - " + value);
+                    }
             );
         }
     }
