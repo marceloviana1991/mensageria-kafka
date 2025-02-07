@@ -1,12 +1,16 @@
 package marceloviana1991;
 
 public class Email {
-    private final String emailId, email, body;
+    private final String emailId;
+    private final String email;
+    private final String body;
+    private final String userId;
 
-    public Email(String emailId, String email, String body) {
+    public Email(String emailId, String email, String body, String userId) {
         this.emailId = emailId;
         this.email = email;
         this.body = body;
+        this.userId = userId;
     }
 
     public String getEmailId() {
@@ -19,6 +23,10 @@ public class Email {
 
     public String getBody() {
         return body;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     @Override
