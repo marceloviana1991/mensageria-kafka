@@ -16,7 +16,7 @@ public class NewOrderMain {
 
             producer.send(
                     "ECOMMERCE_NEW_ORDER",
-                    order.getOrderId(),
+                    order.getUserId(),
                     order
             );
 
